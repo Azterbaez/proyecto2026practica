@@ -34,7 +34,6 @@ function Encabezado() {
     location.pathname === "/catalogo" &&
     localStorage.getItem("usuario-supabase") === null;
 
-  // aquí va tu lógica de contenidoMenu (igual que antes)...
 
   return (
     <Navbar expand="md" fixed="top" className="color-navbar shadow-lg" variant="dark">
