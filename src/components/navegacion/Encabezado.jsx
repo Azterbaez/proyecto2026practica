@@ -40,7 +40,9 @@ const Encabezado = () => {
     if (esLogin) {
         contenidoMenu = (
             <Nav className="ms-auto pe-2">
-                <Nav.Link onClick={() => manejarNavegacion("/login")}>
+                <Nav.Link onClick={() => manejarNavegacion("/login")}
+                    
+                    >
                     <i className="bi-person-fill-lock me-2"></i>
                     Iniciar sesión
                 </Nav.Link>
@@ -102,7 +104,7 @@ const Encabezado = () => {
                     onClick={() => manejarNavegacion(esCatalogo ? "/catalogo" : "/")}
                     style={{ cursor: "pointer" }}
                 >
-                    <img src={logo} width="45" height="45" alt="" />
+                    <img src={logo} width="45" height="45" alt="45" />
                     <strong className="ms-2">Tienda</strong>
                 </Navbar.Brand>
 
