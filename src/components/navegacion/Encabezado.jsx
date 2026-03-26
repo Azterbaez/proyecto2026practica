@@ -103,7 +103,7 @@ const Encabezado = () => {
                     style={{ cursor: "pointer" }}
                 >
                     <img src={logo} width="45" height="45" alt="" />
-                    <strong className="ms-2">Discosa</strong>
+                    <strong className="ms-2">Tienda</strong>
                 </Navbar.Brand>
 
                 {!esLogin && (
@@ -116,7 +116,7 @@ const Encabezado = () => {
                     onHide={() => setMostrarMenu(false)}
                 >
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title>Menú Discosa</Offcanvas.Title>
+                        <Offcanvas.Title>Menú tienda </Offcanvas.Title>
                     </Offcanvas.Header>
 
                     <Offcanvas.Body>
