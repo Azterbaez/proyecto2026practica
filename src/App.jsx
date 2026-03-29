@@ -13,23 +13,34 @@ import "./App.css";
 const App = () => {
   return (
     <Router>
+      <Routes>
 
-      <Encabezado />
+        {/* 🔓 Ruta pública */}
+        <Route path="/login" element={<Login />} />
 
-      <main className="margen-superior-main">
-        <Routes>
-          <Route path="/login" element={<Login />} />
 
-          <Route path="/" element={<RutaProtegida><Inicio /></RutaProtegida>} />
-          <Route path="/Categorias" element={<RutaProtegida><Categorias /></RutaProtegida>} />
-          <Route path="/Catalogo" element={<Catalogo />} />
-          <Route path="/Productos" element={<RutaProtegida><Productos /></RutaProtegida>} />
-          <Route path="*" element={<Pagina404 />} />
-        </Routes>
-      </main>
+        {/* 🔒 Rutas con Navbar */}
+        <Route
+          path="/*"
+          element={
+            <>
+              <Encabezado />
+              <main className="margen-superior-main">
+                <Routes>
+                  <Route path="/" element={<RutaProtegida><Inicio /></RutaProtegida>} />
+                  <Route path="/Categorias" element={<RutaProtegida><Categorias /></RutaProtegida>} />
+                  <Route path="/Catalogo" element={<Catalogo />} />
+                  <Route path="/Productos" element={<RutaProtegida><Productos /></RutaProtegida>} />
+                  <Route path="*" element={<Pagina404 />} />
+                </Routes>
+              </main>
+            </>
+          }
+        />
 
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;
