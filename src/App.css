@@ -60,6 +60,12 @@
 body {
   background: linear-gradient(135deg, #1e3c72, #2a5298);
 }
+body {
+  background-color: #f5f6fa;
+}
+.color-navbar {
+  background: linear-gradient(90deg, #1e3c72, #2a5298);
+}
 
 .login-card {
   backdrop-filter: blur(10px);

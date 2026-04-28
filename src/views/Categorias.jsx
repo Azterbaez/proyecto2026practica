@@ -10,6 +10,7 @@ import NotificacionOperacion from "../components/NotificacionOperacion";
 import TablaCategorias from "../components/categorias/TablaCategorias";
 import CuadroBusquedas from "../components/busquedas/Cuadrobusquedas";
 import Paginacion from "../components/ordenamiento/Paginacion";
+import TarjetaCategoria from "../components/categorias/TarjetaCategoria";
 
 
 const Categorias = () => {
@@ -28,6 +29,10 @@ const Categorias = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
   const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
+
+  const manejarCambioBusqueda = (e) => {
+  setTextoBusqueda(e.target.value);
+};
 
   // 🗑 Eliminar
   const [categoriaEliminar, setCategoriaEliminar] = useState(null);
@@ -225,10 +230,10 @@ const Categorias = () => {
   };
 
   return (
-    <Container className="mt-3">
+    <Container className="mt-4 px-3 px-md-4">
 
       {/* Header */}
-      <Row className="align-items-center mb-3">
+      <Row className="align-items-center mb-4">
         <Col>
           <h3>Categorías</h3>
         </Col>
@@ -240,7 +245,7 @@ const Categorias = () => {
         </Col>
       </Row>
 
-      <hr />
+      <hr className="my-4" />
 
       {/* Loading */}
       {cargando && (
@@ -250,15 +255,25 @@ const Categorias = () => {
       )}
 
       {/* Buscador */}
-      <Row className="mb-3">
-        <Col md={6}>
-          <CuadroBusquedas
-            textoBusqueda={textoBusqueda}
-            manejarCambioBusqueda={(e) => setTextoBusqueda(e.target.value)}
-            placeholder="Buscar por nombre o descripción..."
-          />
-        </Col>
-      </Row>
+    <Row className="mb-3 align-items-center">
+  
+  {/* 🔎 BUSCADOR */}
+  <Col md={8}>
+    <CuadroBusquedas
+      textoBusqueda={textoBusqueda}
+      manejarCambioBusqueda={(e) => setTextoBusqueda(e.target.value)}
+      placeholder="Buscar por nombre o descripción..."
+    />
+  </Col>
+
+  {/* ➕ BOTÓN */}
+  <Col md={4} className="text-md-end mt-2 mt-md-0">
+    <Button onClick={() => setMostrarModal(true)}>
+      Nueva Categoría
+    </Button>
+  </Col>
+
+</Row>
 
       {/* Sin resultados */}
       {!cargando && categoriasFiltradas.length === 0 && (

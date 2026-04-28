@@ -35,7 +35,12 @@ const TablaCategoria = ({
   }
 
   return (
-    <Table striped borderless hover responsive size="sm">
+    <Table striped bordered hover className="bg-white text-dark shadow-sm rounded">
+      <div className="p-3 bg-white rounded shadow-sm">
+  <Table striped hover responsive className="mb-0 text-dark">
+    ...
+  </Table>
+</div>
       <thead>
         <tr>
           <th>ID</th>
