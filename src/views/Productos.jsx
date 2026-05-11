@@ -8,7 +8,7 @@ import NotificacionOperacion from "../components/NotificacionOperacion";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 import TablaProductos from "../components/productos/TablaProducto";
 import Paginacion from "../components/ordenamiento/Paginacion";
-import TarjetasProductos from "../components/productos/TarjetaProducto"
+import TarjetaProducto from "../components/productos/TarjetaProducto";
 
 const Productos = () => {
 
@@ -372,33 +372,26 @@ const Productos = () => {
         </Col>
       </Row>
 
-      <Row>
-        <Col>
-          <TablaProductos
-            productos={productosPaginadas}
-            abrirModalEdicion={abrirModalEdicion}
-            abrirModalEliminacion={abrirModalEliminacion}
-          />
-        </Col>
-      </Row>
+      {!cargando && productosFiltrados.length > 0 && (
+        <Row>
+          <Col xs={12} className="d-none d-lg-block">
+            <TablaProductos
+              productos={productosPaginadas}
+              abrirModalEdicion={abrirModalEdicion}
+              abrirModalEliminacion={abrirModalEliminacion}
+            />
+          </Col>
 
-      <Col xs={12} md={12} lg={12}>
-        {cargando ? (
-          <div className="text-center my-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Cargando...</span>
-            </div>
-            <p className="mt-3">Cargando productos...</p>
-          </div>
-        ) : productosFiltrados.length > 0 ? (
-          <TarjetasProductos
-            productos={productosFiltrados}
-            categorias={categorias}
-            abrirModalEdicion={abrirModalEdicion}
-            abrirModalEliminacion={abrirModalEliminacion}
-          />
-        ) : null}
-      </Col>
+          <Col xs={12} className="d-lg-none">
+            <TarjetaProducto
+              productos={productosFiltrados}
+              categorias={categorias}
+              abrirModalEdicion={abrirModalEdicion}
+              abrirModalEliminacion={abrirModalEliminacion}
+            />
+          </Col>
+        </Row>
+      )}
 
       <hr />
 
