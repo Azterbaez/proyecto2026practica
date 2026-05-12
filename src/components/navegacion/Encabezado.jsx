@@ -102,6 +102,11 @@ useEffect(() => {
                 Catálogo
               </Nav.Link>
 
+              <Nav.Link onClick={() => manejarNavegacion("/empleados")}>
+                <i className="bi bi-images me-2"></i>
+                Empleados
+              </Nav.Link>
+
               <hr />
 
               <Nav.Link onClick={cerrarSesion} className="text-danger">
