@@ -16,6 +16,44 @@ const Productos = () => {
 
   const [mostrarModal, setMostrarModal] = useState(false);
 
+
+
+const generarPDFProducto = (producto) => {
+  const doc = new jsPDF();
+
+  // Título
+  doc.setFontSize(18);
+  doc.text("Reporte de Producto", 14, 20);
+
+  // Línea decorativa
+  doc.line(14, 25, 195, 25);
+
+  // Información del producto
+  doc.setFontSize(12);
+
+  autoTable(doc, {
+    startY: 35,
+    head: [["Campo", "Valor"]],
+    body: [
+      ["ID", producto.id_producto],
+      ["Nombre", producto.nombre_producto],
+      ["Descripción", producto.descripcion_producto],
+      ["Categoría", producto.categoria_producto],
+      ["Precio de Venta", producto.precio_venta],
+    ],
+  });
+
+  // Guardar PDF
+  doc.save(`producto_${producto.id_producto}.pdf`);
+};
+
+
+
+
+
+
+
+
   const [nuevoProducto, setNuevoProducto] = useState({
     id_producto: "",
     nombre_producto: "",
@@ -194,6 +232,7 @@ const Productos = () => {
 
       <TablaProductos
     productos={productosFiltrados}
+  
     />
 
       {/* Modales */}

@@ -38,11 +38,12 @@ const TablaProductos = ({
         <thead>
           <tr>
             <th>ID</th>
-            <th>Imagen</th>
+            
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Categoría</th>
             <th>Precio</th>
+            <th>Imagen</th>
             <th className="text-center">Acciones</th>
           </tr>
         </thead>
