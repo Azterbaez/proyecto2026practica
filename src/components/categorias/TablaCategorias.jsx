@@ -5,9 +5,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 const TablaCategoria = ({
   categorias = [],
   abrirModalEdicion,
-  abrirModalEliminacion
+  abrirModalEliminacion,
+  generarPDFCategoria,
 }) => {
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,12 +35,17 @@ const TablaCategoria = ({
   }
 
   return (
-    <Table striped bordered hover className="bg-white text-dark shadow-sm rounded">
+    <Table
+      striped
+      bordered
+      hover
+      className="bg-white text-dark shadow-sm rounded"
+    >
       <div className="p-3 bg-white rounded shadow-sm">
-  <Table striped hover responsive className="mb-0 text-dark">
-    ...
-  </Table>
-</div>
+        <Table striped hover responsive className="mb-0 text-dark">
+          ...
+        </Table>
+      </div>
       <thead>
         <tr>
           <th>ID</th>
@@ -72,6 +77,15 @@ const TablaCategoria = ({
                 onClick={() => abrirModalEliminacion(categoria)}
               >
                 <i className="bi bi-trash"></i>
+              </Button>
+
+              <Button
+                variant="outline-primary"
+                size="sm"
+                className="m-1"
+                onClick={() => generarPDFCategoria(categoria)}
+              >
+                <i className="bi bi-file-earmark-pdf"></i>
               </Button>
             </td>
           </tr>

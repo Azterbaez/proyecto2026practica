@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Spinner, Alert } from "react-bootstrap";
 import { supabase } from "../../src/assets/database/supabaseconfig";
@@ -11,7 +10,8 @@ import TablaCategorias from "../components/categorias/TablaCategorias";
 import CuadroBusquedas from "../components/busquedas/Cuadrobusquedas";
 import Paginacion from "../components/ordenamiento/Paginacion";
 import TarjetaCategoria from "../components/categorias/TarjetaCategoria";
-
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const Categorias = () => {
   // 🔔 Notificaciones
@@ -31,8 +31,35 @@ const Categorias = () => {
   const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
 
   const manejarCambioBusqueda = (e) => {
-  setTextoBusqueda(e.target.value);
-};
+    setTextoBusqueda(e.target.value);
+  };
+
+  const generarPDFCategoria = (categoria) => {
+    const doc = new jsPDF();
+
+    // Título
+    doc.setFontSize(18);
+    doc.text("Reporte de Categoría", 14, 20);
+
+    // Línea decorativa
+    doc.line(14, 25, 195, 25);
+
+    // Información de la categoría
+    doc.setFontSize(12);
+
+    autoTable(doc, {
+      startY: 35,
+      head: [["Campo", "Valor"]],
+      body: [
+        ["ID", categoria.id_categoria],
+        ["Nombre", categoria.nombre_categoria],
+        ["Descripción", categoria.descripcion_categoria],
+      ],
+    });
+
+    // Descargar PDF
+    doc.save(`categoria_${categoria.id_categoria}.pdf`);
+  };
 
   // 🗑 Eliminar
   const [categoriaEliminar, setCategoriaEliminar] = useState(null);
@@ -60,7 +87,7 @@ const Categorias = () => {
 
   const categoriasPaginadas = categoriasFiltradas.slice(
     (paginaActual - 1) * registrosPorPagina,
-    paginaActual * registrosPorPagina
+    paginaActual * registrosPorPagina,
   );
 
   // 📥 Cargar datos
@@ -98,10 +125,11 @@ const Categorias = () => {
     } else {
       const texto = textoBusqueda.toLowerCase().trim();
 
-      const filtradas = categorias.filter((cat) =>
-        cat.nombre_categoria.toLowerCase().includes(texto) ||
-        (cat.descripcion_categoria &&
-          cat.descripcion_categoria.toLowerCase().includes(texto))
+      const filtradas = categorias.filter(
+        (cat) =>
+          cat.nombre_categoria.toLowerCase().includes(texto) ||
+          (cat.descripcion_categoria &&
+            cat.descripcion_categoria.toLowerCase().includes(texto)),
       );
 
       setCategoriasFiltradas(filtradas);
@@ -231,7 +259,6 @@ const Categorias = () => {
 
   return (
     <Container className="mt-4 px-3 px-md-4">
-
       {/* Header */}
       <Row className="align-items-center mb-4">
         <Col>
@@ -239,9 +266,7 @@ const Categorias = () => {
         </Col>
 
         <Col className="text-end">
-          <Button onClick={() => setMostrarModal(true)}>
-            Nueva Categoría
-          </Button>
+          <Button onClick={() => setMostrarModal(true)}>Nueva Categoría</Button>
         </Col>
       </Row>
 
@@ -255,25 +280,21 @@ const Categorias = () => {
       )}
 
       {/* Buscador */}
-    <Row className="mb-3 align-items-center">
-  
-  {/* 🔎 BUSCADOR */}
-  <Col md={8}>
-    <CuadroBusquedas
-      textoBusqueda={textoBusqueda}
-      manejarCambioBusqueda={(e) => setTextoBusqueda(e.target.value)}
-      placeholder="Buscar por nombre o descripción..."
-    />
-  </Col>
+      <Row className="mb-3 align-items-center">
+        {/* 🔎 BUSCADOR */}
+        <Col md={8}>
+          <CuadroBusquedas
+            textoBusqueda={textoBusqueda}
+            manejarCambioBusqueda={(e) => setTextoBusqueda(e.target.value)}
+            placeholder="Buscar por nombre o descripción..."
+          />
+        </Col>
 
-  {/* ➕ BOTÓN */}
-  <Col md={4} className="text-md-end mt-2 mt-md-0">
-    <Button onClick={() => setMostrarModal(true)}>
-      Nueva Categoría
-    </Button>
-  </Col>
-
-</Row>
+        {/* ➕ BOTÓN */}
+        <Col md={4} className="text-md-end mt-2 mt-md-0">
+          <Button onClick={() => setMostrarModal(true)}>Nueva Categoría</Button>
+        </Col>
+      </Row>
 
       {/* Sin resultados */}
       {!cargando && categoriasFiltradas.length === 0 && (
@@ -285,12 +306,12 @@ const Categorias = () => {
       {/* Tabla / Tarjetas */}
       {!cargando && categoriasFiltradas.length > 0 && (
         <Row>
-
           <Col lg={12} className="d-none d-lg-block">
             <TablaCategorias
               categorias={categoriasPaginadas}
               abrirModalEdicion={abrirModalEdicion}
               abrirModalEliminacion={abrirModalEliminacion}
+              generarPDFCategoria={generarPDFCategoria}
             />
           </Col>
 
@@ -301,7 +322,6 @@ const Categorias = () => {
               abrirModalEliminacion={abrirModalEliminacion}
             />
           </Col>
-
         </Row>
       )}
 
@@ -347,7 +367,6 @@ const Categorias = () => {
         tipo={toast.tipo}
         onCerrar={() => setToast({ ...toast, mostrar: false })}
       />
-
     </Container>
   );
 };
