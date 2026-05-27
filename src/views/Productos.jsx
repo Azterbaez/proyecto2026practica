@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Alert, Spinner } from "react-bootstrap";
 import { supabase } from "../assets/database/supabaseconfig";
+
+import ModalEliminacionProducto from "../components/productos/ModalEliminacionProducto";
+import ModalEdicionProducto from "../components/productos/ModalEdicionProducto";
 import ModalRegistroProducto from "../components/productos/ModalRegistroProducto";
-import NotificacionOperacion from "../components/NotificacionOperacion";
-import CuadroBusquedas from "../components/busquedas/Cuadrobusquedas";
 import TablaProductos from "../components/productos/TablaProductos";
+import TarjetasProductos from "../components/productos/TarjetasProductos";
+import Paginacion from "../components/ordenamiento/Paginacion";
+import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
+import NotificacionOperacion from "../components/NotificacionOperacion";
+
+
+
 
 const Productos = () => {
+
   const [productos, setProductos] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -15,47 +23,13 @@ const Productos = () => {
   const [cargando, setCargando] = useState(true);
 
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
+  const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
 
-
-
-const generarPDFProducto = (producto) => {
-  const doc = new jsPDF();
-
-  // Título
-  doc.setFontSize(18);
-  doc.text("Reporte de Producto", 14, 20);
-
-  // Línea decorativa
-  doc.line(14, 25, 195, 25);
-
-  // Información del producto
-  doc.setFontSize(12);
-
-  autoTable(doc, {
-    startY: 35,
-    head: [["Campo", "Valor"]],
-    body: [
-      ["ID", producto.id_producto],
-      ["Nombre", producto.nombre_producto],
-      ["Descripción", producto.descripcion_producto],
-      ["Categoría", producto.categoria_producto],
-      ["Precio de Venta", producto.precio_venta],
-    ],
-  });
-
-  // Guardar PDF
-  doc.save(`producto_${producto.id_producto}.pdf`);
-};
-
-
-
-
-
-
-
+  const [registrosPorPagina, establecerRegistrosPorPagina] = useState(5);
+  const [paginaActual, establecerPaginaActual] = useState(1);
 
   const [nuevoProducto, setNuevoProducto] = useState({
-    id_producto: "",
     nombre_producto: "",
     descripcion_producto: "",
     categoria_producto: "",
@@ -63,27 +37,70 @@ const generarPDFProducto = (producto) => {
     archivo: null,
   });
 
-  const [productoEditado, setProductoEditado] = useState({
+  const productosPaginadas = productosFiltrados.slice(
+    (paginaActual - 1) * registrosPorPagina,
+    paginaActual * registrosPorPagina
+  );
+
+  const [productoEditar, setProductoEditar] = useState({
     id_producto: "",
     nombre_producto: "",
     descripcion_producto: "",
     categoria_producto: "",
     precio_venta: "",
+    url_imagen: "",
     archivo: null,
   });
 
   const [productoAEliminar, setProductoAEliminar] = useState(null);
-  const [toast, setToast] = useState({ mostrar: false, mensaje: "", tipo: "" });
+
+  const [toast, setToast] = useState({
+    mostrar: false,
+    mensaje: "",
+    tipo: "",
+  });
+
+  const abrirModalEdicion = (prod) => {
+    setProductoEditar(prod);
+    setMostrarModalEdicion(true);
+  };
+
+  const abrirModalEliminacion = (prod) => {
+    setProductoAEliminar(prod);
+    setMostrarModalEliminacion(true);
+  };
 
   const manejoCambioInput = (e) => {
     const { name, value } = e.target;
-    setNuevoProducto((prev) => ({ ...prev, [name]: value }));
+
+    setNuevoProducto((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const manejoCambioInputEdicion = (e) => {
+    const { name, value } = e.target;
+    setProductoEditar((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const manejoCambioArchivoActualizar = (e) => {
+    const archivo = e.target.files[0];
+    if (archivo && archivo.type.startsWith("image/")) {
+      setProductoEditar((prev) => ({ ...prev, archivo }));
+    } else {
+      alert("Selecciona una imagen válida (JPG, PNG, etc.)");
+    }
   };
 
   const manejoCambioArchivo = (e) => {
     const archivo = e.target.files[0];
+
     if (archivo && archivo.type.startsWith("image/")) {
-      setNuevoProducto((prev) => ({ ...prev, archivo }));
+      setNuevoProducto((prev) => ({
+        ...prev,
+        archivo,
+      }));
     } else {
       alert("Selecciona una imagen válida (JPG, PNG, etc.)");
     }
@@ -118,10 +135,113 @@ const generarPDFProducto = (producto) => {
     cargarCategorias();
   }, []);
 
+  const eliminarProducto = async () => {
+    if (!productoAEliminar) return;
+
+    try {
+      setMostrarModalEliminacion(false);
+
+      const { error } = await supabase
+        .from("productos")
+        .delete()
+        .eq("id_producto", productoAEliminar.id_producto);
+
+      if (error) throw error;
+
+      setToast({
+        mostrar: true,
+        mensaje: `Producto ${productoAEliminar.nombre_producto} eliminado correctamente`,
+        tipo: "exito",
+      });
+
+      await cargarProductos();
+
+    } catch (err) {
+      console.error("Error al eliminar producto:", err);
+
+      setToast({
+        mostrar: true,
+        mensaje: "Error al eliminar producto",
+        tipo: "error",
+      });
+    }
+  };
+
+  const actualizarProducto = async () => {
+    try {
+      if (
+        !productoEditar.nombre_producto.trim() ||
+        !productoEditar.categoria_producto ||
+        !productoEditar.precio_venta
+      ) {
+        setToast({
+          mostrar: true,
+          mensaje: "Completa los campos obligatorios",
+          tipo: "advertencia",
+        });
+        return;
+      }
+
+      setMostrarModalEdicion(false);
+
+      let datosActualizados = {
+        nombre_producto: productoEditar.nombre_producto,
+        descripcion_producto: productoEditar.descripcion_producto || null,
+        categoria_producto: productoEditar.categoria_producto,
+        precio_venta: parseFloat(productoEditar.precio_venta),
+        url_imagen: productoEditar.url_imagen,
+      };
+
+      if (productoEditar.archivo) {
+        const nombreArchivo = `${Date.now()}_${productoEditar.archivo.name}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("imagenes_productos")
+          .upload(nombreArchivo, productoEditar.archivo);
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from("imagenes_productos")
+          .getPublicUrl(nombreArchivo);
+        datosActualizados.url_imagen = urlData.publicUrl;
+
+        if (productoEditar.url_imagen) {
+          const nombreAnterior = productoEditar.url_imagen.split("/").pop().split("?")[0];
+          await supabase.storage.from("imagenes_productos").remove([nombreAnterior]).catch(() => { });
+        }
+      }
+
+      const { error } = await supabase
+        .from("productos")
+        .update(datosActualizados)
+        .eq("id_producto", productoEditar.id_producto);
+
+      if (error) throw error;
+
+      await cargarProductos();
+
+      setProductoEditar({
+        id_producto: "",
+        nombre_producto: "",
+        descripcion_producto: "",
+        categoria_producto: "",
+        precio_venta: "",
+        url_imagen: "",
+        archivo: null,
+      });
+
+      setToast({ mostrar: true, mensaje: "Producto actualizado correctamente", tipo: "exito" });
+    } catch (err) {
+      console.error("Error al actualizar:", err);
+      setToast({ mostrar: true, mensaje: "Error al actualizar producto", tipo: "error" });
+    }
+  };
+
   const cargarCategorias = async () => {
     try {
       const { data, error } = await supabase
-        .from("categoria")
+        .from("categorias")
         .select("*")
         .order("id_categoria", { ascending: true });
 
@@ -129,7 +249,28 @@ const generarPDFProducto = (producto) => {
 
       setCategorias(data || []);
     } catch (err) {
-      console.error("Error al cargar categorias:", err);
+      console.error("Error al cargar categorías:", err);
+    }
+  };
+
+  useEffect(() => {
+    cargarProductos();
+  }, []);
+
+  const cargarProductos = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("productos")
+        .select("*")
+        .order("id_producto", { ascending: true });
+
+      if (error) throw error;
+
+      setProductos(data || []);
+      setProductosFiltrados(data || []);
+      setCargando(false);
+    } catch (err) {
+      console.error("Error al cargar productos:", err);
     }
   };
 
@@ -143,10 +284,10 @@ const generarPDFProducto = (producto) => {
       ) {
         setToast({
           mostrar: true,
-          mensaje:
-            "Completa los campos obligatorios (nombre, categoria, precio e imagen)",
+          mensaje: "Completa los campos obligatorios (nombre, categoría, precio e imagen)",
           tipo: "advertencia",
         });
+
         return;
       }
 
@@ -166,13 +307,15 @@ const generarPDFProducto = (producto) => {
 
       const urlPublica = urlData.publicUrl;
 
-      const { error } = await supabase.from("productos").insert({
-        nombre_producto: nuevoProducto.nombre_producto,
-        descripcion_producto: nuevoProducto.descripcion_producto || null,
-        categoria_producto: nuevoProducto.categoria_producto,
-        precio_venta: parseFloat(nuevoProducto.precio_venta),
-        url_imagen: urlPublica,
-      });
+      const { error } = await supabase.from("productos").insert([
+        {
+          nombre_producto: nuevoProducto.nombre_producto,
+          descripcion_producto: nuevoProducto.descripcion_producto || null,
+          categoria_producto: nuevoProducto.categoria_producto,
+          precio_venta: parseFloat(nuevoProducto.precio_venta),
+          url_imagen: urlPublica,
+        },
+      ]);
 
       if (error) throw error;
 
@@ -189,8 +332,12 @@ const generarPDFProducto = (producto) => {
         mensaje: "Producto registrado correctamente",
         tipo: "exito",
       });
+
+      await cargarProductos();
+
     } catch (err) {
       console.error("Error al agregar producto:", err);
+
       setToast({
         mostrar: true,
         mensaje: "Error al registrar producto",
@@ -201,6 +348,7 @@ const generarPDFProducto = (producto) => {
 
   return (
     <Container className="mt-3">
+
       <Row className="align-items-center mb-3">
         <Col className="d-flex align-items-center">
           <h3 className="mb-0">
@@ -211,9 +359,7 @@ const generarPDFProducto = (producto) => {
         <Col xs={3} sm={5} md={5} lg={5} className="text-end">
           <Button onClick={() => setMostrarModal(true)} size="md">
             <i className="bi-plus-lg"></i>
-            <span className="d-none d-sm-inline ms-2">
-              Nuevo Producto
-            </span>
+            <span className="d-none d-sm-inline ms-2">Nuevo Producto</span>
           </Button>
         </Col>
       </Row>
@@ -230,12 +376,39 @@ const generarPDFProducto = (producto) => {
         </Col>
       </Row>
 
-      <TablaProductos
-    productos={productosFiltrados}
-  
-    />
+      {!cargando && productosFiltrados.length > 0 && (
+        <Row>
+          <Col xs={12} className="d-none d-lg-block">
+            <TablaProductos
+              productos={productosPaginadas}
+              abrirModalEdicion={abrirModalEdicion}
+              abrirModalEliminacion={abrirModalEliminacion}
+            />
+          </Col>
 
-      {/* Modales */}
+          <Col xs={12} className="d-lg-none">
+            <TarjetaProducto
+              productos={productosFiltrados}
+              categorias={categorias}
+              abrirModalEdicion={abrirModalEdicion}
+              abrirModalEliminacion={abrirModalEliminacion}
+            />
+          </Col>
+        </Row>
+      )}
+
+      <hr />
+
+      {productosFiltrados.length > 0 && (
+        <Paginacion
+          registrosPorPagina={registrosPorPagina}
+          totalRegistros={productosFiltrados.length}
+          paginaActual={paginaActual}
+          establecerPaginaActual={establecerPaginaActual}
+          establecerRegistrosPorPagina={establecerRegistrosPorPagina}
+        />
+      )}
+
       <ModalRegistroProducto
         mostrarModal={mostrarModal}
         setMostrarModal={setMostrarModal}
@@ -246,13 +419,29 @@ const generarPDFProducto = (producto) => {
         categorias={categorias}
       />
 
+      <ModalEdicionProducto
+        mostrarModalEdicion={mostrarModalEdicion}
+        setMostrarModalEdicion={setMostrarModalEdicion}
+        productoEditar={productoEditar}
+        manejoCambioInputEdicion={manejoCambioInputEdicion}
+        manejoCambioArchivoActualizar={manejoCambioArchivoActualizar}
+        actualizarProducto={actualizarProducto}
+        categorias={categorias}
+      />
+
+      <ModalEliminacionProducto
+        mostrarModalEliminacion={mostrarModalEliminacion}
+        setMostrarModalEliminacion={setMostrarModalEliminacion}
+        eliminarProducto={eliminarProducto}
+        producto={productoAEliminar}
+      />
+
       <NotificacionOperacion
         mostrar={toast.mostrar}
         mensaje={toast.mensaje}
         tipo={toast.tipo}
         onCerrar={() => setToast({ ...toast, mostrar: false })}
       />
-
 
     </Container>
   );
