@@ -42,23 +42,23 @@ useEffect(() => {
   const esLogin = location.pathname === "/login";
 
   return (
-    <Navbar expand="md" fixed="top" className="color-navbar shadow" variant="dark">
+    <Navbar expand="md" fixed="top-2" className="color-navbar shadow" variant="dark">
       <Container>
 
         {/* 🔹 LOGO */}
         <Navbar.Brand
           onClick={() => manejarNavegacion("/")}
-          className="d-flex align-items-center gap-2 fw-semibold"
+          className="d-flex align-items-center gap fw-semibold"
           style={{ cursor: "pointer" }}
         >
           <img
             alt="Logo tienda"
             src={logo}
-            width="50"
-            height="50"
+            width="100"
+            height="100"
             className="rounded"
           />
-          <span className="fs-5">Tienda</span>
+          <span className="fs-2">Tienda</span>
         </Navbar.Brand>
 
         {!esLogin && (
@@ -112,11 +112,7 @@ useEffect(() => {
                 <i className="bi bi-images me-2"></i>
                 Clientes
               </Nav.Link>
-
-              <Nav.Link onClick={() => manejarNavegacion("/ventas")}>
-                <i className="bi bi-images me-2"></i>
-                Ventas
-              </Nav.Link>
+              
 
               <hr />
 
@@ -127,7 +123,7 @@ useEffect(() => {
             </Nav>
 
             {/* 🔹 USUARIO */}
-            <div className="mt-4 p-3 rounded bg-body-secondary small">
+            <div className="mt-1 p-2 rounded bg-body-secondary small">
               <div className="fw-semibold mb-1">
                 <i className="bi bi-person-circle me-2"></i>
                 Usuario
