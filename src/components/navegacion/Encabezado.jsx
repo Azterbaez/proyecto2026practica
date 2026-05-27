@@ -71,7 +71,7 @@ const Encabezado = () => {
                 <Nav.Link onClick={() => manejarNavegacion("/ventas")}>
                     <strong>Ventas</strong>
                 </Nav.Link>
-                
+
 
                 <Nav.Link onClick={() => manejarNavegacion("/catalogo")}>
                     <strong>Catálogo</strong>
@@ -119,7 +119,7 @@ const Encabezado = () => {
                         height="45" 
                         alt="Logo Pulpería" 
                     />
-                    <strong className="ms-2">pulperia</strong>
+                    <strong className="ms-2">Ferreteria</strong>
                 </Navbar.Brand>
 
                 {/* Toggle solo si NO estamos en login */}
@@ -138,7 +138,7 @@ const Encabezado = () => {
                     onHide={() => setShowOffcanvas(false)}
                 >
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title>Menú Pulpería</Offcanvas.Title>
+                        <Offcanvas.Title>Menú Ferreteria</Offcanvas.Title>
                     </Offcanvas.Header>
 
                     <Offcanvas.Body>
