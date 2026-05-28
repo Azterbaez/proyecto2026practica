@@ -1,0 +1,8 @@
+// prueba real 
+
+const sum = require ('./suma');
+
+test("La funcion suma debe devolver suma correcta", () =>{
+  expect(sum(6, 4)).toBe(10);
+});
+
