@@ -4,10 +4,13 @@ import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 
 import logo from "../../assets/logo_tpo.webp";
 import { supabase } from "../../database/supabaseconfig";
+import ChatIA from "../ia/ChatIA";
 
 const Encabezado = () => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [mostrarChatIA, setMostrarChatIA] = useState(false);
 
     const [showOffcanvas, setShowOffcanvas] = useState(false);
 
@@ -77,10 +80,15 @@ const Encabezado = () => {
                     <strong>Catálogo</strong>
                 </Nav.Link>
 
+                <Nav.Link onClick={() => setMostrarChatIA(true)} className="text-white">
+                    <i className="bi bi-robot me-2"></i>
+                </Nav.Link>
+
+
                 <hr className="d-md-none" />
 
-                <Nav.Link 
-                    onClick={cerrarSesion} 
+                <Nav.Link
+                    onClick={cerrarSesion}
                     className="text-danger mt-2 mt-md-0"
                 >
                     <i className="bi bi-box-arrow-right me-2"></i>
@@ -101,10 +109,10 @@ const Encabezado = () => {
     };
 
     return (
-        <Navbar 
-            expand="md" 
-            fixed="top" 
-            className="color-navbar shadow-lg" 
+        <Navbar
+            expand="md"
+            fixed="top"
+            className="color-navbar shadow-lg"
             variant="dark"
         >
             <Container>
@@ -113,22 +121,24 @@ const Encabezado = () => {
                     onClick={() => manejarNavegacion(esCatalogoPublico ? "/catalogo" : "/")}
                     style={{ cursor: "pointer" }}
                 >
-                    <img 
-                        src={logo} 
-                        width="45" 
-                        height="45" 
-                        alt="Logo Pulpería" 
+                    <img
+                        src={logo}
+                        width="45"
+                        height="45"
+                        alt="Logo Pulpería"
                     />
                     <strong className="ms-2">Ferreteria</strong>
                 </Navbar.Brand>
 
                 {/* Toggle solo si NO estamos en login */}
                 {!esLogin && (
-                    <Navbar.Toggle 
+                    <Navbar.Toggle
                         aria-controls="offcanvas-navbar"
                         onClick={() => setShowOffcanvas(true)}
                     />
                 )}
+
+                <ChatIA mostrar={mostrarChatIA} onCerrar={() => setMostrarChatIA(false)} />
 
                 {/* Offcanvas (menú móvil) */}
                 <Navbar.Offcanvas
@@ -147,6 +157,8 @@ const Encabezado = () => {
                 </Navbar.Offcanvas>
             </Container>
         </Navbar>
+
+        
     );
 };
 
