@@ -9,6 +9,7 @@ import Empleados from "./views/Empleados";
 import Clientes from "./views/Clientes";
 import Ventas from "./views/Ventas";
 import Login from "./views/Login";
+import Dashboard from "./views/Dashboard";
 import RutaProtegida from "./components/rutas/RutasProtegida";
 import Pagina404 from "./views/Pagina404";
 import "./App.css";
@@ -36,7 +37,8 @@ const App = () => {
                   <Route path="/Productos" element={<RutaProtegida><Productos /></RutaProtegida>} />
                   <Route path="/empleados" element={<RutaProtegida><Empleados /></RutaProtegida>} /> 
                   <Route path="/clientes" element={<RutaProtegida><Clientes /></RutaProtegida>} /> 
-                  <Route path="/ventas" element={<RutaProtegida><Ventas /></RutaProtegida>} /> 
+                  <Route path="/ventas" element={<RutaProtegida><Ventas /></RutaProtegida>} />
+                  <Route path="/dashboard" element={<RutaProtegida> <Dashboard/> </RutaProtegida>} />
                   <Route path="*" element={<Pagina404 />} />
                 </Routes>
               </main>

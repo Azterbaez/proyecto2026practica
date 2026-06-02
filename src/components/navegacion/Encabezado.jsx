@@ -112,6 +112,11 @@ useEffect(() => {
                 <i className="bi bi-images me-2"></i>
                 Clientes
               </Nav.Link>
+
+                 <Nav.Link onClick={() => manejarNavegacion("/dashboard")}>
+                <i className="bi bi-images me-2"></i>
+                DashBoard
+              </Nav.Link>
               
 
               <hr />
