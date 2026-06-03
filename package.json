@@ -8,9 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test" : "jest --coverage"
+    "test": "jest --coverage"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@supabase/supabase-js": "^2.105.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
