@@ -25,6 +25,8 @@ const Categorias = () => {
   });
 
 
+
+
   // email
   const [mostrarModalCorreo, setMostrarModalCorreo] = useState(false);
 const [emailDestino, setEmailDestino] = useState("");
@@ -42,6 +44,31 @@ const [enviandoCorreo, setEnviandoCorreo] = useState(false);
   const manejarCambioBusqueda = (e) => {
     setTextoBusqueda(e.target.value);
   };
+
+const copiarCategoria = async (categoria) => {
+    if (!categoria) return;
+
+    const texto = `
+ID: ${categoria.id_categoria}
+Categoría: ${categoria.nombre_categoria}
+Descripción: ${categoria.descripcion_categoria || 'Sin descripción'}`;
+
+    try {
+        await navigator.clipboard.writeText(texto);
+        setToast({
+            mostrar: true,
+            mensaje: `Categoría "${categoria.nombre_categoria}" copiada al portapapeles.`,
+            tipo: "exito",
+        });
+    } catch (err) {
+        console.error("Error al copiar: ", err);
+        setToast({
+            mostrar: true,
+            mensaje: "No se pudo copiar al portapapeles.",
+            tipo: "error",
+        });
+    }
+};
 
   const generarPDFCategoria = (categoria) => {
     const doc = new jsPDF();
@@ -98,6 +125,10 @@ const [enviandoCorreo, setEnviandoCorreo] = useState(false);
     (paginaActual - 1) * registrosPorPagina,
     paginaActual * registrosPorPagina,
   );
+
+  // codigo QR
+
+
 
   // 📥 Cargar datos
   const cargarCategorias = async () => {
@@ -235,6 +266,9 @@ const [enviandoCorreo, setEnviandoCorreo] = useState(false);
       });
     }
   };
+
+
+  
 
   // ✏️ Actualizar
   const actualizarCategoria = async () => {
@@ -418,6 +452,7 @@ emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
               abrirModalEdicion={abrirModalEdicion}
               abrirModalEliminacion={abrirModalEliminacion}
               generarPDFCategoria={generarPDFCategoria}
+              copiarCategoria={copiarCategoria}
             />
           </Col>
 
@@ -426,6 +461,7 @@ emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
               categorias={categoriasPaginadas}
               abrirModalEdicion={abrirModalEdicion}
               abrirModalEliminacion={abrirModalEliminacion}
+              copiarCategoria={copiarCategoria}
             />
           </Col>
         </Row>

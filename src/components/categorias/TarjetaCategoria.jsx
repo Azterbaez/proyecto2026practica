@@ -5,7 +5,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 const TarjetaCategoria = ({
   categorias,
   abrirModalEdicion,
-  abrirModalEliminacion
+  abrirModalEliminacion,
+  copiarCategoria
 }) => {
   const [cargando, setCargando] = useState(true);
   const [idTarjetaActiva, setIdTarjetaActiva] = useState(null);
@@ -17,6 +18,7 @@ const TarjetaCategoria = ({
   const manejarTeclaEscape = useCallback((evento) => {
     if (evento.key === "Escape") setIdTarjetaActiva(null);
   }, []);
+  
 
   useEffect(() => {
     window.addEventListener("keydown", manejarTeclaEscape);
@@ -91,6 +93,7 @@ const TarjetaCategoria = ({
                     aria-modal="true"
                     onClick={(e) => {
                       e.stopPropagation();
+
                       setIdTarjetaActiva(null);
                     }}
                     className="tarjeta-categoria-capa"
@@ -111,6 +114,8 @@ const TarjetaCategoria = ({
                         <i className="bi bi-pencil"></i>
                       </Button>
 
+                     
+
                       <Button
                         variant="outline-danger"
                         size="sm"
@@ -122,6 +127,19 @@ const TarjetaCategoria = ({
                       >
                         <i className="bi bi-trash"></i>
                       </Button>
+
+
+                       <Button
+                        variant="outline-success"
+                        size="sm"
+                        className="m-1"
+                        onClick={() => copiarCategoria(categoria)}
+                        title="Copiar al portapapeles"
+                      >
+                        <i className="bi bi-clipboard"></i>
+                      </Button>   
+
+                      
                     </div>
                   </div>
                 )}

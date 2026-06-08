@@ -7,12 +7,15 @@ const TablaCategoria = ({
   abrirModalEdicion,
   abrirModalEliminacion,
   generarPDFCategoria,
+  copiarCategoria
+  
 }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Siempre deja de cargar cuando llegan datos (aunque sea array vacío)
     setLoading(false);
+    
   }, [categorias]);
 
   if (loading) {
@@ -23,6 +26,8 @@ const TablaCategoria = ({
       </div>
     );
   }
+  // QR
+
 
   // 🟡 Caso sin datos
   if (categorias.length === 0) {
@@ -79,6 +84,15 @@ const TablaCategoria = ({
                 <i className="bi bi-trash"></i>
               </Button>
 
+               <Button
+    variant="outline-success"
+    size="sm"
+    className="m-1"
+    onClick={() => copiarCategoria(categoria)}
+    title="Copiar al portapapeles"
+>
+    <i className="bi bi-clipboard"></i>
+</Button>
               <Button
                 variant="outline-primary"
                 size="sm"
