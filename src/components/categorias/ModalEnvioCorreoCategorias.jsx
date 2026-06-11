@@ -23,13 +23,12 @@ const ModalEnvioCorreoCategorias = ({
       <Modal.Body>
         <Form.Group className="mb-3">
           <Form.Label>Correo Destino</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="ejemplo@correo.com"
-            value={emailDestino}
-             onChange={(e) => setEmailDestino(e.target.value)} 
-            placeholder="ejemplo@correo.com"
-          />
+         <Form.Control
+  type="email"
+  placeholder="ejemplo@correo.com"
+  value={emailDestino}
+  onChange={(e) => setEmailDestino(e.target.value)}
+/>
         </Form.Group>
         <small className="text-muted">
           Se enviará el listado completo de <strong>{totalCategorias}</strong> categorías.
