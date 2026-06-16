@@ -24,6 +24,7 @@ const ModalEliminacionProducto = ({
             backdrop="static"
             keyboard={false}
             centered
+<<<<<<< HEAD
             contentClassName="modal-app modal-app--peligro"
         >
             <Modal.Header closeButton>
@@ -42,6 +43,15 @@ const ModalEliminacionProducto = ({
                     <p className="text-muted mb-2">Esta acción no se puede deshacer.</p>
                     <p className="nombre-destacado mb-0">{producto?.nombre_producto}</p>
                 </div>
+=======
+        >
+            <Modal.Header closeButton>
+                <Modal.Title>Confirmar Eliminación</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                ¿Estás seguro de que deseas eliminar el producto "<strong>{producto?.nombre_producto}</strong>"?
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
             </Modal.Body>
 
             <Modal.Footer>

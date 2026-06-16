@@ -69,5 +69,9 @@ describe("Validacion de producto", () => {
         const resultado = registroProducto(producto);
         expect(resultado.valido).toBe(true);
     });
+<<<<<<< HEAD
 });
 
+=======
+});
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe

@@ -44,6 +44,7 @@ BRDA:26,8,1,2
 BRF:21
 BRH:20
 end_of_record
+<<<<<<< HEAD
 TN:
 SF:src\test\suma.js
 FN:3,sum
@@ -57,3 +58,5 @@ LH:2
 BRF:0
 BRH:0
 end_of_record
+=======
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe

@@ -1,28 +1,57 @@
+<<<<<<< HEAD
 import React, { useEffect, useState, useRef  } from "react";
 import { Container, Row, Col, Card, Spinner, Form, Button } from "react-bootstrap";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { supabase } from "../database/supabaseconfig";
 import * as XLSX from "xlsx";
+=======
+import React, { useEffect, useState, useRef } from "react";
+import {
+  Container,Row,Col,Card,Spinner,Form,Button,  
+} from "react-bootstrap";
+
+import {
+  LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,PieChart,Pie,Cell
+} from "recharts";
+
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
 
 
+<<<<<<< HEAD
 const Inicio = () => {
 
+=======
+import { supabase } from "../assets/database/supabaseconfig";
+import * as XLSX from "xlsx";
+
+const Inicio = () => {
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   const [cargando, setCargando] = useState(true);
   const graficoHoraRef = useRef(null);
 
   const [fechaDesde, setFechaDesde] = useState(
     new Date().toLocaleDateString("en-CA", {
+<<<<<<< HEAD
       timeZone: "America/Managua"
     })
+=======
+      timeZone: "America/Managua",
+    }),
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   );
 
   const [fechaHasta, setFechaHasta] = useState(
     new Date().toLocaleDateString("en-CA", {
+<<<<<<< HEAD
       timeZone: "America/Managua"
     })
+=======
+      timeZone: "America/Managua",
+    }),
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   );
 
   const [estadisticas, setEstadisticas] = useState({
@@ -33,13 +62,18 @@ const Inicio = () => {
     montoProductos: 0,
     cantidadVentas: 0,
     ventasPorHora: [],
+<<<<<<< HEAD
     ventasPorCategoria: []
+=======
+    ventasPorCategoria: [],
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   });
 
   useEffect(() => {
     cargarDatos(fechaDesde, fechaHasta);
   }, [fechaDesde, fechaHasta]);
 
+<<<<<<< HEAD
   const generarPdfVentasHora = async () => {
   try {
 
@@ -124,6 +158,8 @@ const Inicio = () => {
   }
 };
 
+=======
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   const cargarDatos = async (desde, hasta) => {
     try {
       setCargando(true);
@@ -146,28 +182,55 @@ const Inicio = () => {
       let ventasPorCategoria = [];
 
       if (idsVentas.length > 0) {
+<<<<<<< HEAD
         const { data: detalles } = await supabase
           .from("detalles_ventas")
           .select(`
+=======
+        const { data: detalles, error: detallesError } = await supabase
+          .from("detalles_ventas")
+          .select(
+            `
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
             cantidad,
             subtotal,
             productos (
               nombre_producto,
+<<<<<<< HEAD
               categorias (nombre_categoria)
             )
           `)
           .in("id_venta", idsVentas);
 
+=======
+              categorias (
+                nombre_categoria
+              )
+            )
+          `,
+          )
+          .in("id_venta", idsVentas);
+
+        if (detallesError) throw detallesError;
+
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
         detalles?.forEach((d) => {
           productosVendidos += d.cantidad || 0;
           montoProductos += d.subtotal || 0;
 
           const categoria =
+<<<<<<< HEAD
             d.productos?.categorias?.nombre_categoria ||
             "Sin categoría";
 
           const existente = ventasPorCategoria.find(
             (c) => c.name === categoria
+=======
+            d.productos?.categorias?.nombre_categoria || "Sin categoría";
+
+          const existente = ventasPorCategoria.find(
+            (c) => c.name === categoria,
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
           );
 
           if (existente) {
@@ -175,7 +238,11 @@ const Inicio = () => {
           } else {
             ventasPorCategoria.push({
               name: categoria,
+<<<<<<< HEAD
               value: d.subtotal || 0
+=======
+              value: d.subtotal || 0,
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
             });
           }
         });
@@ -216,7 +283,11 @@ const Inicio = () => {
 
         ventasPorHora.push({
           hora: `${h.toString().padStart(2, "0")}:00`,
+<<<<<<< HEAD
           total: Math.round(acumulado)
+=======
+          total: Math.round(acumulado),
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
         });
       }
 
@@ -228,12 +299,19 @@ const Inicio = () => {
         montoProductos,
         cantidadVentas: ventas?.length || 0,
         ventasPorHora,
+<<<<<<< HEAD
         ventasPorCategoria
       });
 
     } catch (err) {
       console.error("Error al cargar estadísticas:", err);
 
+=======
+        ventasPorCategoria,
+      });
+    } catch (err) {
+      console.error("Error al cargar estadísticas:", err);
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
     } finally {
       setCargando(false);
     }
@@ -248,14 +326,24 @@ const Inicio = () => {
 
       const { data: ventas, error: errorVentas } = await supabase
         .from("ventas")
+<<<<<<< HEAD
         .select(`
+=======
+        .select(
+          `
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
           id_venta,
           fecha_venta,
           total,
           metodo_pago,
           id_empleado,
           id_cliente
+<<<<<<< HEAD
         `)
+=======
+        `,
+        )
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
         .gte("fecha_venta", inicioRango)
         .lte("fecha_venta", finRango)
         .order("fecha_venta", { ascending: false });
@@ -269,7 +357,12 @@ const Inicio = () => {
       if (idsVentas.length > 0) {
         const { data: detalles, error: errorDetalles } = await supabase
           .from("detalles_ventas")
+<<<<<<< HEAD
           .select(`
+=======
+          .select(
+            `
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
             id_detalle,
             id_venta,
             cantidad,
@@ -278,6 +371,7 @@ const Inicio = () => {
             id_producto,
             productos (
               nombre_producto,
+<<<<<<< HEAD
               categorias (nombre_categoria)
             )
           `)
@@ -289,6 +383,20 @@ const Inicio = () => {
         } else {
           detallesVenta = detalles || [];
         }
+=======
+              categorias (
+                nombre_categoria
+              )
+            )
+          `,
+          )
+          .in("id_venta", idsVentas)
+          .order("id_venta");
+
+        if (errorDetalles) throw errorDetalles;
+
+        detallesVenta = detalles || [];
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
       }
 
       const wb = XLSX.utils.book_new();
@@ -296,23 +404,34 @@ const Inicio = () => {
       if (ventas && ventas.length > 0) {
         const wsVentas = XLSX.utils.json_to_sheet(ventas);
 
+<<<<<<< HEAD
         XLSX.utils.book_append_sheet(
           wb,
           wsVentas,
           "Ventas"
         );
 
+=======
+        XLSX.utils.book_append_sheet(wb, wsVentas, "Ventas");
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
       } else {
         XLSX.utils.book_append_sheet(
           wb,
           XLSX.utils.json_to_sheet([
+<<<<<<< HEAD
             { Mensaje: "No hay ventas en este rango" }
           ]),
           "Ventas"
+=======
+            { Mensaje: "No hay ventas en este rango" },
+          ]),
+          "Ventas",
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
         );
       }
 
       if (detallesVenta && detallesVenta.length > 0) {
+<<<<<<< HEAD
         const wsDetalles =
           XLSX.utils.json_to_sheet(detallesVenta);
 
@@ -341,29 +460,62 @@ const Inicio = () => {
       console.error("Error generando Excel:", err);
       alert("Error al generar el Excel. Revisa la consola.");
 
+=======
+        const wsDetalles = XLSX.utils.json_to_sheet(detallesVenta);
+
+        XLSX.utils.book_append_sheet(wb, wsDetalles, "Detalles_Ventas");
+      } else {
+        XLSX.utils.book_append_sheet(
+          wb,
+          XLSX.utils.json_to_sheet([{ Mensaje: "No hay detalles de ventas" }]),
+          "Detalles_Ventas",
+        );
+      }
+
+      XLSX.writeFile(wb, `Reporte_Ventas_${fechaDesde}_a_${fechaHasta}.xlsx`);
+    } catch (err) {
+      console.error("Error generando Excel:", err);
+      alert("Error al generar el Excel. Revisa la consola.");
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
     } finally {
       setCargando(false);
     }
   };
 
   const COLORES = [
+<<<<<<< HEAD
     "#ea580c",
     "#c2410c",
     "#fbbf24",
     "#16a34a",
     "#78716c",
     "#dc2626",
+=======
+    "#5e26b2",
+    "#39ff95",
+    "#ff6bc6",
+    "#8b46ff",
+    "#00d4ff",
+    "#ffd93d",
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   ];
 
   if (cargando) {
     return (
+<<<<<<< HEAD
       <Container className="text-center mt-5 vista-contenedor">
         <Spinner animation="border" variant="primary" size="lg" />
         <p className="mt-3 text-muted">Cargando estadísticas...</p>
+=======
+      <Container className="text-center mt-5">
+        <Spinner animation="border" variant="primary" />
+        <p className="mt-3">Cargando estadísticas...</p>
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
       </Container>
     );
   }
 
+<<<<<<< HEAD
   return (
     <Container fluid className="pagina-inicio vista-contenedor px-0">
       <header className="inicio-hero">
@@ -503,10 +655,201 @@ const Inicio = () => {
                     strokeWidth={2}
                     dot={{ r: 3, strokeWidth: 2 }}
                     activeDot={{ r: 5 }}
+=======
+  const generarPdfVentasHora = async () => {
+  try {
+    if (!graficoHoraRef.current) {
+      alert("No se encontro el grafico para generar el PDF.");
+      return;
+    }
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    // Título y fecha
+    pdf.setFontSize(18);
+    pdf.setTextColor("#130775");
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Reporte de Ventas por Hora", 14, 15);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor("#006600");
+    pdf.setFontSize(10);
+    pdf.text(`Periodo: ${fechaDesde} - ${fechaHasta}`, 14, 22);
+
+    // Imagen del gráfico
+    const canvas = await html2canvas(graficoHoraRef.current);
+    const imagen = canvas.toDataURL("image/png");
+    pdf.addImage(imagen, "PNG", 10, 30, 190, 80);
+
+    // Resumen general
+    pdf.setFontSize(14);
+    pdf.setTextColor("#130775");
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Resumen General", 14, 115);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor("#006600");
+    pdf.setFontSize(10);
+
+    pdf.text(`Total Ventas: C$ ${estadisticas.totalVentas.toFixed(2)}`, 14, 125);
+    pdf.text(`Ventas Efectivo: C$ ${estadisticas.ventasEfectivo.toFixed(2)}`, 14, 132);
+    pdf.text(`Ventas Tarjeta: C$ ${estadisticas.ventasTarjeta.toFixed(2)}`, 14, 139);
+    pdf.text(`Productos Vendidos: ${estadisticas.productosVendidos}`, 14, 146);
+    pdf.text(`Cantidad Ventas: ${estadisticas.cantidadVentas}`, 14, 153);
+
+    // Tabla de ventas por hora
+    const filas = estadisticas.ventasPorHora.map(item => [
+      item.hora,
+      `C$ ${item.total}`
+    ]);
+
+    autoTable(pdf, {
+      startY: 160,
+      head: [["Hora", "Monto Acumulado"]],
+      body: filas
+    });
+
+    // Descargar PDF
+    const fechaActual = new Date().toLocaleDateString("en-CA", {
+      timeZone: "America/Managua"
+    });
+
+    pdf.save(`VentasHora_${fechaDesde}_${fechaHasta}_Generado_${fechaActual}.pdf`);
+
+  } catch (error) {
+    console.error(error);
+    alert("Error generando PDF");
+  }
+};
+
+  return (
+    <Container fluid className="mt-2">
+      <div className="mb-4">
+        <h2>Dashboard</h2>
+        <h6>Estadísticas del Negocio</h6>
+      </div>
+
+      <Row className="mb-4">
+        <Col xs={12} md={3}>
+          <Form.Group>
+            <Form.Label>Desde</Form.Label>
+
+            <Form.Control
+              type="date"
+              value={fechaDesde}
+              onChange={(e) => setFechaDesde(e.target.value)}
+            />
+          </Form.Group>
+        </Col>
+
+        <Col xs={12} md={3}>
+          <Form.Group>
+            <Form.Label>Hasta</Form.Label>
+
+            <Form.Control
+              type="date"
+              value={fechaHasta}
+              onChange={(e) => setFechaHasta(e.target.value)}
+            />
+          </Form.Group>
+        </Col>
+
+        <Col xs={12} md={3} className="d-flex align-items-end mt-3 mt-md-0">
+          <Button variant="success" onClick={descargarExcel}>
+            <i className="bi bi-file-earmark-excel me-2"></i>
+            Descargar Excel
+          </Button>
+        </Col>
+      </Row>
+
+      <Row className="g-4 mb-5">
+        <Col md={6} lg={3}>
+          <Card
+            className="h-100 text-white shadow"
+            style={{
+              background: "linear-gradient(135deg, #28a745, #34ce57)",
+            }}
+          >
+            <Card.Body>
+              <h5>Ventas Totales</h5>
+
+              <h2>C$ {estadisticas.totalVentas.toFixed(2)}</h2>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={6} lg={3}>
+          <Card
+            className="h-100 text-white shadow"
+            style={{
+              background: "linear-gradient(135deg, #0166d3, #3399ff)",
+            }}
+          >
+            <Card.Body>
+              <h5>Efectivo</h5>
+
+              <h2>C$ {estadisticas.ventasEfectivo.toFixed(2)}</h2>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={6} lg={3}>
+          <Card
+            className="h-100 text-white shadow"
+            style={{
+              background: "linear-gradient(135deg, #5ea5f1, #94c0ec)",
+            }}
+          >
+            <Card.Body>
+              <h5>Tarjeta</h5>
+
+              <h2>C$ {estadisticas.ventasTarjeta.toFixed(2)}</h2>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={6} lg={3}>
+          <Card
+            className="h-100 text-white shadow"
+            style={{
+              background: "linear-gradient(135deg, #e27d01, #ffa500)",
+            }}
+          >
+            <Card.Body>
+              <h5>Productos Vendidos</h5>
+
+              <h2>{estadisticas.productosVendidos}</h2>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row className="g-4">
+        <Col lg={8}>
+          <Card className="shadow border-0">
+            <Card.Body ref={graficoHoraRef}>
+              <h5 className="mb-3">Ventas por Hora</h5>
+
+              <ResponsiveContainer width="100%" height={360}>
+                <LineChart data={estadisticas.ventasPorHora}>
+                  <CartesianGrid strokeDasharray="3 3" />
+
+                  <XAxis dataKey="hora" />
+
+                  <YAxis tickFormatter={(v) => `C$${v}`} />
+
+                  <Tooltip formatter={(v) => [`C$ ${v}`, "Monto"]} />
+
+                  <Line
+                    type="monotone"
+                    dataKey="total"
+                    stroke="#5e26b2"
+                    strokeWidth={4}
+                    dot={{ r: 6 }}
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
                   />
                 </LineChart>
               </ResponsiveContainer>
             </Card.Body>
+<<<<<<< HEAD
             <div className="p-3 text-center">
               <Button variant="outline-danger"
               onClick={generarPdfVentasHora}
@@ -526,6 +869,17 @@ const Inicio = () => {
                   Distribución por categorías
                 </p>
               </div>
+=======
+          </Card>
+        </Col>
+
+        <Col lg={4}>
+          <Card className="shadow border-0">
+            <Card.Body>
+
+              <h5 className="mb-3">Ventas por Categoría</h5>
+
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
               <ResponsiveContainer width="100%" height={360}>
                 <PieChart>
                   <Pie
@@ -538,6 +892,7 @@ const Inicio = () => {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
+<<<<<<< HEAD
                     innerRadius={55}
                     outerRadius={95}
                     label
@@ -546,10 +901,36 @@ const Inicio = () => {
                       <Cell key={`cell-${i}`} fill={COLORES[i % COLORES.length]} />
                     ))}
                   </Pie>
+=======
+                    innerRadius={60}
+                    outerRadius={110}
+                    label
+                  >
+                    {estadisticas.ventasPorCategoria.map((_, i) => (
+                      <Cell
+                        key={`cell-${i}`}
+                        fill={COLORES[i % COLORES.length]}
+                      />
+                    ))}
+                  </Pie>
+
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
                   <Tooltip formatter={(v) => `C$ ${v}`} />
                 </PieChart>
               </ResponsiveContainer>
             </Card.Body>
+<<<<<<< HEAD
+=======
+            <div className="p-3 text-center">
+              <Button
+                variant="outline-danger"
+                onClick={generarPdfVentasHora}
+              >
+                <i className="bi bi-file-earmark-pdf me-2"></i>
+                Descargar PDF
+              </Button>
+            </div>
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
           </Card>
         </Col>
       </Row>
@@ -557,4 +938,8 @@ const Inicio = () => {
   );
 };
 
+<<<<<<< HEAD
 export default Inicio;
+=======
+export default Inicio;
+>>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
