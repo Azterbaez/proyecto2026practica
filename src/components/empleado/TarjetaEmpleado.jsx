@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Card, Row, Col, Spinner, Button } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const TarjetaEmpleado = ({
   empleados,
   abrirModalEdicion,
 }) => {
-  const [cargando, setCargando] = useState(true);
   const [idTarjetaActiva, setIdTarjetaActiva] = useState(null);
-
-  useEffect(() => {
-    setCargando(!(empleados && empleados.length > 0));
-  }, [empleados]);
 
   const manejarTeclaEscape = useCallback((evento) => {
     if (evento.key === "Escape") setIdTarjetaActiva(null);
@@ -28,12 +23,6 @@ const TarjetaEmpleado = ({
 
   return (
     <>
-      {cargando ? (
-        <div className="text-center my-5">
-          <h5>Cargando empleados...</h5>
-          <Spinner animation="border" variant="success" role="status" />
-        </div>
-      ) : (
         <div>
           {empleados.map((empleado) => {
             const tarjetaActiva = idTarjetaActiva === empleado.id_empleado;
@@ -126,7 +115,6 @@ const TarjetaEmpleado = ({
             );
           })}
         </div>
-      )}
     </>
   );
 };

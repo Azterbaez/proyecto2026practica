@@ -34,8 +34,8 @@ const TablaVentas = ({ ventas, abrirEdicion }) => {
                   className="badge rounded-pill"
                   style={{
                     background: venta.metodo_pago === "efectivo"
-                      ? "linear-gradient(135deg, #10b981, #059669)"
-                      : "linear-gradient(135deg, #06b6d4, #0ea5e9)",
+                      ? "linear-gradient(135deg, #16a34a, #15803d)"
+                      : "linear-gradient(135deg, #ea580c, #c2410c)",
                   }}
                 >
                   {venta.metodo_pago}

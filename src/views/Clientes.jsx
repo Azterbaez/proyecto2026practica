@@ -254,6 +254,7 @@ const Clientes = () => {
       await cargarClientes();
 
     } catch (err) {
+      console.error("Error al registrar cliente:", err);
 
       setToast({
         mostrar: true,
@@ -298,6 +299,7 @@ const Clientes = () => {
       setClientes(data || []);
 
     } catch (err) {
+      console.error("Error al cargar clientes:", err);
 
       setToast({
         mostrar: true,
@@ -362,6 +364,7 @@ const Clientes = () => {
       });
 
     } catch (err) {
+      console.error("Error al eliminar cliente:", err);
 
       setToast({
         mostrar: true,
@@ -439,6 +442,7 @@ const Clientes = () => {
       });
 
     } catch (err) {
+      console.error("Error al actualizar cliente:", err);
 
       setToast({
         mostrar: true,

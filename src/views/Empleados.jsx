@@ -55,6 +55,7 @@ const Empleados = () => {
             setEmpleados(data || []);
             setEmpleadosFiltrados(data || []);
         } catch (err) {
+            console.error("Error al cargar empleados:", err);
             setToast({ mostrar: true, mensaje: "Error inesperado al cargar empleados", tipo: "error" });
         } finally {
             setCargando(false);
@@ -89,7 +90,7 @@ const Empleados = () => {
         try {
             setMostrarModal(false);
 
-            const { data: authData, error: authError } = await supabase.auth.signUp({
+            const { error: authError } = await supabase.auth.signUp({
                 email: nuevoEmpleado.email,
                 password: nuevoEmpleado.password,
                 options: {
@@ -156,6 +157,7 @@ const Empleados = () => {
                 tipo: "exito"
             });
         } catch (err) {
+            console.error("Error al actualizar empleado:", err);
             setToast({ mostrar: true, mensaje: "Error al actualizar empleado", tipo: "error" });
         }
     };

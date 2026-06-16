@@ -47,7 +47,7 @@ const Inicio = () => {
 
     // Título y fecha
     pdf.setFontSize(18);
-    pdf.setTextColor("#330775");
+    pdf.setTextColor("#c2410c");
     pdf.setFont("helvetica", "bold");
     pdf.text("Reporte de Ventas por Hora", 14, 15);
 
@@ -63,7 +63,7 @@ const Inicio = () => {
 
     // Resumen general
     pdf.setFontSize(14);
-    pdf.setTextColor("#330775");
+    pdf.setTextColor("#c2410c");
     pdf.setFont("helvetica", "bold");
     pdf.text("Resumen General", 14, 115);
 
@@ -347,12 +347,12 @@ const Inicio = () => {
   };
 
   const COLORES = [
-    "#2563eb",
-    "#7c3aed",
-    "#f59e0b",
-    "#10b981",
-    "#06b6d4",
-    "#ef4444",
+    "#ea580c",
+    "#c2410c",
+    "#fbbf24",
+    "#16a34a",
+    "#78716c",
+    "#dc2626",
   ];
 
   if (cargando) {
@@ -499,7 +499,7 @@ const Inicio = () => {
                   <Line
                     type="monotone"
                     dataKey="total"
-                    stroke="#2563eb"
+                    stroke="#ea580c"
                     strokeWidth={2}
                     dot={{ r: 3, strokeWidth: 2 }}
                     activeDot={{ r: 5 }}

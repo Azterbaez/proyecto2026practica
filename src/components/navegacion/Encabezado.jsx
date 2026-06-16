@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 
-import logo from "../../assets/logo_tpo.webp";
+import logo from "../../assets/logo_tpo.png";
 import { supabase } from "../../database/supabaseconfig";
 import ChatIA from "../ia/ChatIA";
 

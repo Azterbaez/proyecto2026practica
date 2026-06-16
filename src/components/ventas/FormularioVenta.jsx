@@ -17,7 +17,6 @@ const FormularioVenta = ({
   totalGeneral,
   agregarDetalle,
   eliminarDetalle,
-  actualizarCantidad,
   guardarVenta,
   ventaAEditar
 }) => {
@@ -65,7 +64,7 @@ const FormularioVenta = ({
 
                 <h5
                   className="fw-bold mb-4"
-                  style={{ color: "#1e3a8a" }}
+                  style={{ color: "#1c1917" }}
                 >
                   Datos de la Venta
                 </h5>
@@ -163,7 +162,7 @@ const FormularioVenta = ({
 
                 <h5
                   className="fw-bold mb-4"
-                  style={{ color: "#1e3a8a" }}
+                  style={{ color: "#1c1917" }}
                 >
                   Agregar Producto
                 </h5>
@@ -261,7 +260,7 @@ const FormularioVenta = ({
                 className="border-0 py-3"
                 style={{
                   background:
-                    "linear-gradient(135deg, #1e293b, #334155)",
+                    "linear-gradient(135deg, #1c1917, #44403c)",
                   color: "#fff"
                 }}
               >
@@ -354,7 +353,7 @@ const FormularioVenta = ({
               <Card.Footer
                 className="border-0 py-4"
                 style={{
-                  background: "#f8fafc"
+                  background: "#fafaf9"
                 }}
               >
                 <div className="d-flex justify-content-between align-items-center">

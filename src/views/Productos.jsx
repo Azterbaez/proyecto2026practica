@@ -688,7 +688,7 @@ const Productos = () => {
       <hr
         style={{
           borderColor:
-            "rgba(37, 99, 235, 0.15)"
+            "rgba(234, 88, 12, 0.15)"
         }}
       />
 

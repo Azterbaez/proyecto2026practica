@@ -149,14 +149,21 @@ const obtenerNombreCategoria = (idCategoria) => {
     </Row>
   )}
 
-  {!cargando && productosFiltrados?.length === 0 && (
+  {!cargando && error && (
+    <Alert variant="danger" className="text-center">
+      <i className="bi bi-exclamation-triangle me-2"></i>
+      {error}
+    </Alert>
+  )}
+
+  {!cargando && !error && productosFiltrados?.length === 0 && (
     <Alert variant="info" className="text-center">
       <i className="bi bi-info-circle me-2"></i>
       No se encontraron productos que coincidan con tu búsqueda.
     </Alert>
   )}
 
-  {!cargando && productosFiltrados?.length > 0 && (
+  {!cargando && !error && productosFiltrados?.length > 0 && (
     <Row className="g-3">
       {productosFiltrados.map((producto) => (
         <Col xs={6} sm={6} md={4} lg={3} key={producto.id_producto}>
