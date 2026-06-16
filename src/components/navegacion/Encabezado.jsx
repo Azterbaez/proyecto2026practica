@@ -6,6 +6,11 @@ import logo from "../../assets/logo_tpo.png";
 import { supabase } from "../../database/supabaseconfig";
 import ChatIA from "../ia/ChatIA";
 
+
+
+
+
+
 const Encabezado = () => {
     const navigate = useNavigate();
     const location = useLocation();
