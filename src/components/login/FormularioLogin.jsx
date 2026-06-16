@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../../assets/database/supabaseconfig";
-import { Container, Card, Form, Button, InputGroup } from "react-bootstrap";
-import { PersonFill, LockFill } from "react-bootstrap-icons";
+import React from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 
 const FormularioLogin = () => {
   const [email, setEmail] = useState("");

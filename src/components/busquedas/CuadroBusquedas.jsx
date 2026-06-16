@@ -12,7 +12,7 @@ const CuadroBusquedas = ({
   return (
     <InputGroup className="cuadro-busqueda">
       <InputGroup.Text>
-        <i className="bi bi-search" aria-hidden="true"></i>
+        <i className="bi bi-search"></i>
       </InputGroup.Text>
       <Form.Control
         type="search"
