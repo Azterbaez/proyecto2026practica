@@ -28,7 +28,6 @@ const ModalEdicionProducto = ({
             backdrop="static"
             centered
             size="lg"
-<<<<<<< HEAD
             contentClassName="modal-app"
         >
             <Modal.Header closeButton>
@@ -36,11 +35,6 @@ const ModalEdicionProducto = ({
                     <i className="bi bi-pencil-square"></i>
                     Editar Producto
                 </Modal.Title>
-=======
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Editar Producto</Modal.Title>
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
             </Modal.Header>
 
             <Modal.Body>

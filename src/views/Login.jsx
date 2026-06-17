@@ -1,87 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FormularioLogin from "../components/Login/FormularioLogin";
-<<<<<<< HEAD
 import { supabase } from "../database/supabaseconfig";
 
 function Login() {
   const [usuario, setUsuario] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState(null);
-=======
-import { supabase } from "../assets/database/supabaseconfig";
-
-
-function Login() {
-
-  const [usuario, setUsuario] = useState("");
-  const [contrasena, setContrasena] = useState("");
-  const [error, setError] = useState(null);
-
-  // NUEVAS FUNCIONES
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [recordarme, setRecordarme] = useState(false);
   const [cargando, setCargando] = useState(false);
 
   const navegar = useNavigate();
 
-<<<<<<< HEAD
-  useEffect(() => {
-    const correoGuardado = localStorage.getItem("correo-recordado");
-=======
   // CARGAR CORREO RECORDADO
   useEffect(() => {
-
-    const correoGuardado =
-      localStorage.getItem("correo-recordado");
-
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
+    const correoGuardado = localStorage.getItem("correo-recordado");
     if (correoGuardado) {
       setUsuario(correoGuardado);
       setRecordarme(true);
     }
-<<<<<<< HEAD
   }, []);
 
   const iniciarSesion = async () => {
     try {
-=======
-
-  }, []);
-
-  const iniciarSesion = async () => {
-
-    try {
-
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
       if (!usuario || !contrasena) {
         setError("Completa todos los campos");
         return;
       }
-
       setError(null);
       setCargando(true);
-
-      const { data, error: errorSupabase } =
-        await supabase.auth.signInWithPassword({
-          email: usuario.trim().toLowerCase(),
-          password: contrasena,
-        });
-
+      const { data, error: errorSupabase } = await supabase.auth.signInWithPassword({
+        email: usuario.trim().toLowerCase(),
+        password: contrasena,
+      });
       if (errorSupabase) {
         setError("Usuario o contraseña incorrectos");
         setCargando(false);
         return;
       }
-
-<<<<<<< HEAD
+      // GUARDAR CORREO SI ACTIVA "RECORDARME"
       if (recordarme) {
         localStorage.setItem("correo-recordado", usuario);
       } else {
         localStorage.removeItem("correo-recordado");
       }
-
       if (data.user) {
         localStorage.setItem("usuario-supabase", data.user.id);
         navegar("/");
@@ -89,48 +52,12 @@ function Login() {
     } catch (err) {
       setError("Error al conectar con el servidor");
       console.error("Error en la solicitud:", err);
-=======
-      // GUARDAR CORREO SI ACTIVA "RECORDARME"
-      if (recordarme) {
-        localStorage.setItem(
-          "correo-recordado",
-          usuario
-        );
-      } else {
-        localStorage.removeItem(
-          "correo-recordado"
-        );
-      }
-
-      if (data.user) {
-
-        localStorage.setItem(
-          "usuario-supabase",
-          data.user.id
-        );
-
-        navegar("/");
-      }
-
-    } catch (err) {
-
-      setError("Error al conectar con el servidor");
-
-      console.error(
-        "Error en la solicitud:",
-        err
-      );
-
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
     } finally {
       setCargando(false);
     }
   };
 
-<<<<<<< HEAD
-=======
   // ENTER PARA INICIAR SESIÓN
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   const manejarEnter = (e) => {
     if (e.key === "Enter") {
       iniciarSesion();
@@ -138,30 +65,10 @@ function Login() {
   };
 
   useEffect(() => {
-<<<<<<< HEAD
     const usuarioGuardado = localStorage.getItem("usuario-supabase");
     if (usuarioGuardado) {
       navegar("/");
     }
-  }, [navegar]);
-
-  return (
-    <div className="login-pagina">
-      <div className="login-tarjeta">
-        <div className="login-tarjeta__marca">
-          <h1>Sistema de ventas</h1>
-          <p>Ingresa con tu cuenta de empleado</p>
-=======
-
-    const usuarioGuardado =
-      localStorage.getItem(
-        "usuario-supabase"
-      );
-
-    if (usuarioGuardado) {
-      navegar("/");
-    }
-
   }, [navegar]);
 
   const estiloContenedor = {
@@ -197,34 +104,16 @@ function Login() {
   };
 
   return (
-
     <div style={estiloContenedor}>
-
       <div style={estiloCard}>
-
         <div className="text-center mb-4">
-
-          <h1
-            style={{
-              color: "#fff",
-              fontWeight: "700",
-              marginBottom: "10px"
-            }}
-          >
+          <h1 style={{ color: "#fff", fontWeight: "700", marginBottom: "10px" }}>
             Sistema de Ventas
           </h1>
-
-          <p
-            style={{
-              color: "rgba(255,255,255,0.75)"
-            }}
-          >
+          <p style={{ color: "rgba(255,255,255,0.75)" }}>
             Bienvenido nuevamente
           </p>
-
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
         </div>
-
         <FormularioLogin
           usuario={usuario}
           contrasena={contrasena}
@@ -232,11 +121,6 @@ function Login() {
           setUsuario={setUsuario}
           setContrasena={setContrasena}
           iniciarSesion={iniciarSesion}
-<<<<<<< HEAD
-=======
-
-          // NUEVAS PROPS
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
           mostrarPassword={mostrarPassword}
           setMostrarPassword={setMostrarPassword}
           recordarme={recordarme}
@@ -244,13 +128,7 @@ function Login() {
           cargando={cargando}
           manejarEnter={manejarEnter}
         />
-<<<<<<< HEAD
       </div>
-=======
-
-      </div>
-
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
     </div>
   );
 }

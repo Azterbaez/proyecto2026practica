@@ -1,25 +1,19 @@
 import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
 
-const CuadroBusquedas = ({
-  textBusqueda,
-  textoBusqueda,
-  manejarCambioBusqueda,
-  placeholder = "Buscar...",
-}) => {
-  const valor = textoBusqueda ?? textBusqueda ?? "";
-
+const CuadroBusquedas = ({ textoBusqueda, manejarCambioBusqueda }) => {
   return (
-    <InputGroup className="cuadro-busqueda">
+    
+    <InputGroup style={{ width: "100%", borderRadius: "0.375rem" }} className="shadow-sm">
       <InputGroup.Text>
         <i className="bi bi-search"></i>
       </InputGroup.Text>
+
       <Form.Control
-        type="search"
-        placeholder={placeholder}
-        value={valor}
+        type="text"
+        placeholder="Buscar..."
+        value={textoBusqueda}
         onChange={manejarCambioBusqueda}
-        aria-label={placeholder}
       />
     </InputGroup>
   );

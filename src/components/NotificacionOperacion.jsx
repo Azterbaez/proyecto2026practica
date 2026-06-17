@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 
@@ -9,12 +8,6 @@ const NotificacionOperacion = ({
   onCerrar
 }) => {
 
-=======
-import { useEffect, useState } from 'react';
-import { Toast, ToastContainer } from 'react-bootstrap';
-
-const NotificacionOperacion = ({ mostrar, mensaje, tipo, onCerrar }) => {
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
   const [visible, setVisible] = useState(mostrar);
 
   useEffect(() => {
@@ -23,7 +16,6 @@ const NotificacionOperacion = ({ mostrar, mensaje, tipo, onCerrar }) => {
 
   const fechaLocal = () => {
     const f = new Date();
-<<<<<<< HEAD
 
     const anio = f.getFullYear();
     const mes = String(f.getMonth() + 1).padStart(2, "0");
@@ -69,23 +61,10 @@ const NotificacionOperacion = ({ mostrar, mensaje, tipo, onCerrar }) => {
         show={visible}
         autohide
         delay={3000}
-=======
-    const fecha = new Date(f);
-    const anio = fecha.getFullYear();
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    return `${dia}-${mes}-${anio} ${fecha.toTimeString().slice(0, 5)}`;
-  }
-
-  return (
-    <ToastContainer position="top-center" className="p-2">
-      <Toast
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
         onClose={() => {
           setVisible(false);
           onCerrar();
         }}
-<<<<<<< HEAD
         className="border-0 overflow-hidden"
         style={{
           minWidth: "420px",
@@ -215,22 +194,6 @@ const NotificacionOperacion = ({ mostrar, mensaje, tipo, onCerrar }) => {
 
         </Toast.Body>
 
-=======
-        show={visible}
-        delay={2500}
-        autohide
-        bg={tipo === 'exito' ? 'success' : tipo === 'advertencia' ? 'warning' : 'danger'}
-      >
-        <Toast.Header>
-          <strong className="me-auto">
-            {tipo === 'exito' ? '✅ Éxito' : tipo === 'advertencia' ? '⚠️ Advertencia' : '❌ Error'}
-          </strong>
-          <small>{fechaLocal()}</small>
-        </Toast.Header>
-        <Toast.Body className={tipo === 'exito' || tipo === 'error' ? 'text-white' : ''}>
-          {mensaje}
-        </Toast.Body>
->>>>>>> ec2a97295fc5201f05148feda443b310b223b0fe
       </Toast>
     </ToastContainer>
   );
