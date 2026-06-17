@@ -1,84 +1,97 @@
 import React from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 
-const FormularioLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-  const navigate = useNavigate();
-
-  const manejarLogin = async (e) => {
-    e.preventDefault();
-    setErrorMsg("");
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setErrorMsg("Correo o contraseña incorrectos");
-    } else {
-      navigate("/");
-    }
-  };
-
+const FormularioLogin = ({
+  usuario,
+  contrasena,
+  error,
+  setUsuario,
+  setContrasena,
+  iniciarSesion,
+  mostrarPassword,
+  setMostrarPassword,
+  recordarme,
+  setRecordarme,
+  cargando,
+  manejarEnter,
+}) => {
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
-      <Card className="shadow-lg p-4 rounded-4 login-card" style={{ width: "400px" }}>
-        <Card.Body>
-          <h3 className="text-center mb-4 fw-bold">Iniciar Sesión</h3>
+    <>
+      {error && (
+        <Alert variant="danger" className="py-2 mb-3">
+          {error}
+        </Alert>
+      )}
 
-          {errorMsg && (
-            <div className="alert alert-danger text-center">
-              {errorMsg}
-            </div>
-          )}
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          iniciarSesion();
+        }}
+      >
+        <Form.Group className="mb-3" controlId="usuario">
+          <Form.Label>Correo electrónico</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="tu@correo.com"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+            onKeyDown={manejarEnter}
+            autoComplete="username"
+            required
+          />
+        </Form.Group>
 
-          <Form onSubmit={manejarLogin}>
-            <Form.Group className="mb-3">
-              <Form.Label>Correo electrónico</Form.Label>
-              <InputGroup>
-                <InputGroup.Text>
-                  <PersonFill />
-                </InputGroup.Text>
-                <Form.Control
-                  type="email"
-                  placeholder="ejemplo@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </InputGroup>
-            </Form.Group>
+        <Form.Group className="mb-3" controlId="contrasena">
+          <Form.Label>Contraseña</Form.Label>
+          <div className="d-flex gap-2">
+            <Form.Control
+              type={mostrarPassword ? "text" : "password"}
+              placeholder="Tu contraseña"
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
+              onKeyDown={manejarEnter}
+              autoComplete="current-password"
+              required
+            />
+            {setMostrarPassword && (
+              <Button
+                type="button"
+                variant="outline-secondary"
+                onClick={() => setMostrarPassword(!mostrarPassword)}
+                aria-label={
+                  mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                }
+              >
+                <i
+                  className={`bi ${mostrarPassword ? "bi-eye-slash" : "bi-eye"}`}
+                ></i>
+              </Button>
+            )}
+          </div>
+        </Form.Group>
 
-            <Form.Group className="mb-4">
-              <Form.Label>Contraseña</Form.Label>
-              <InputGroup>
-                <InputGroup.Text>
-                  <LockFill />
-                </InputGroup.Text>
-                <Form.Control
-                  type="password"
-                  placeholder="********"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </InputGroup>
-            </Form.Group>
+        {setRecordarme && (
+          <Form.Check
+            type="checkbox"
+            id="recordarme"
+            className="mb-3"
+            label="Recordar correo"
+            checked={recordarme}
+            onChange={(e) => setRecordarme(e.target.checked)}
+          />
+        )}
 
-            <Button
-              type="submit"
-              className="w-100 rounded-3 fw-semibold"
-              variant="dark"
-            >
-              Ingresar
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+        <Button
+          type="submit"
+          variant="primary"
+          className="w-100"
+          disabled={cargando}
+        >
+          {cargando ? "Ingresando..." : "Iniciar sesión"}
+        </Button>
+      </Form>
+    </>
   );
 };
 
